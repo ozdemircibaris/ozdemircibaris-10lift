@@ -12,15 +12,18 @@ export default function Pokes() {
   const { state, dispatch } = useContext(PokesContext);
   let pokemonService = new PokemonService(dispatch)
   const { pokesValues } = state;
-    useEffect(() => {
-      if(pokesValues.length === 0) {
-        pokemonService.getPokemonList()
-      }
+
+  useEffect(() => {
+    if(pokesValues.length === 0) {
+      pokemonService.getPokemonList()
+    }
   }, [state, dispatch])
+
   const Handle = SortableHandle(({ tabIndex, item }: { tabIndex: any, item: any }) => {
     return (
       <div id='pokeCardContainer' className='border-2 rounded-md shadow-lg h-40 w-40 m-3'>
         <img
+          id='pokeCardIcon'
           tabIndex={tabIndex}
           className='h-24 w-24 place-self-center'
           src={item.imageUrl} />
@@ -30,7 +33,7 @@ export default function Pokes() {
   })
 
   const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number, newIndex: number }) => {
-    pokemonService.swapPokes(state.pokesValues, oldIndex, newIndex)
+    pokemonService.swapPokes(pokesValues, oldIndex, newIndex)
   };
   const SortableList = SortableContainer((props: any) => {
     const { items, ...restProps } = props;
